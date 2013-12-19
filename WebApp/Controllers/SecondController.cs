@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.Dynamic;
 using WebApp.Models;
+using System.Web;
 
 namespace WebApp.Controllers
 {
@@ -122,6 +123,70 @@ namespace WebApp.Controllers
             string errors = getErrorMessagesFor(ModelState);
             string texte = string.Format("taux={0}, errors={1}", model.Taux, errors);
             return Content(texte, "text/plain", Encoding.UTF8);
+        }
+
+        // Array of query parameters
+        // http://localhost:50982/Second/Action08?data=a&data=b&data=c => data=[a,b,c]
+        // Usage in case of multiple choices select
+        public ContentResult Action08(string[] data)
+        {
+            string strData = "";
+            if(data != null && data.Length != 0)
+            {
+                strData = string.Join(",", data);
+            }
+        string texte = string.Format("data=[{0}]", strData);
+        return Content(texte, "text/plain", Encoding.UTF8);
+        }
+
+        // version with a List<int>
+        public ContentResult Action09(List<int> data)
+        {
+            string errors = getErrorMessagesFor(ModelState);
+            string strData = "";
+            if(data != null && data.Count != 0)
+            {
+                strData = string.Join(",", data);
+            }
+        string text = string.Format("data=[{0}], errors=[{1}]", strData, errors);
+        return Content(text, "text/plain", Encoding.UTF8);
+        }
+
+        // Filter query parameters
+        public ContentResult Action10(ActionModel04 model)
+        {
+            string errors = getErrorMessagesFor(ModelState);
+            string text = string.Format("valide={0}, info1={1}, info2={2}, errors={3}", 
+            ModelState.IsValid, model.Info1, model.Info2, errors);
+            return Content(text, "text/plain", Encoding.UTF8);
+        }
+
+        // Usage of HTTP context and session
+        public ContentResult Action11()
+        {
+            //HTTP request context
+            HttpContextBase context = ControllerContext.HttpContext;
+            // infos from Application scope
+            string infoApp = context.Application["infoApp"] as string;
+            // and infos from Session scope
+            int? counter = context.Session["counter"] as int?;
+            counter++;
+            context.Session["counter"] = counter;
+            // client response
+            string text = string.Format("infoApp={0}, counter={1}", infoApp, counter);
+            return Content(text, "text/plain", Encoding.UTF8);
+        }
+
+        // Usage of ApplicationModel and SessionModel
+        public ContentResult Action12(ApplicationModel applicationData, SessionModel sessionData)
+        {
+            // on récupère les infos de portée Application
+            string infoApp = applicationData.InfoApp;
+            // et celles de portée Session
+            int counter = sessionData.Counter++;
+            // la réponse au client
+            string text = string.Format("infoApp={0}, counter={1}", infoApp, counter);
+            return Content(text, "text/plain", Encoding.UTF8);
         }
 	}
 }
