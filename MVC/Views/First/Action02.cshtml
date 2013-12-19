@@ -1,0 +1,28 @@
+﻿@model MVC.Models.ViewModel
+@using MVC.Models
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Action02</title>
+</head>
+<body>
+    <select>
+        @foreach(Personne p in Model.Personnes)
+        {
+            string selected = "";
+            if (p.Id == Model.SelectedId)
+            {
+                selected = "selected=\"selected\"";
+            }
+            <option value="@p.Id" @selected>@p.Prenom @p.Nom</option>
+        }
+    </select>
+</body>
+</html>
