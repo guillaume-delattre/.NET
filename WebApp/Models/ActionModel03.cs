@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebApp.Models
 {
-    public class ActionModel03
+    public class ActionModel03 : IValidatableObject
     {
         [Required(ErrorMessage = "Le paramètre taux est requis")]
         public double? Taux { get; set; }
@@ -20,6 +20,6 @@ namespace WebApp.Models
                     résultats.Add(new ValidationResult("Le paramètre taux doit être < 4.2 ou > 6.7", new string[] { "Taux"}));
                }
            return résultats;
-            }
+           }
     }
 }

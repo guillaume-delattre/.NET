@@ -107,12 +107,21 @@ namespace WebApp.Controllers
             return Content(text, "text/plain", Encoding.UTF8);
         }
 
+        // string pattern
         public ContentResult Action06(ActionModel02 model)
         {
-           string erreurs = getErrorMessagesFor(ModelState);
-           string texte = string.Format("email={0}, jour={1}, info1={2}, info2={3}, info3={4}, erreurs={5}",
-             model.Email, model.Jour, model.Info1, model.Info2, model.Info3, erreurs);
+           string errors = getErrorMessagesFor(ModelState);
+           string texte = string.Format("email={0}, jour={1}, info1={2}, info2={3}, info3={4}, errors={5}",
+             model.Email, model.Jour, model.Info1, model.Info2, model.Info3, errors);
            return Content(texte, "text/plain", Encoding.UTF8);
+        }
+
+        // IValidatableObject
+        public ContentResult Action07(ActionModel03 model)
+        {
+            string errors = getErrorMessagesFor(ModelState);
+            string texte = string.Format("taux={0}, errors={1}", model.Taux, errors);
+            return Content(texte, "text/plain", Encoding.UTF8);
         }
 	}
 }
